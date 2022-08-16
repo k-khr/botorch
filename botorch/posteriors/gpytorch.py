@@ -195,5 +195,5 @@ def scalarize_posterior(
             cov_scaled = cov_scaled.evaluate()
         new_cov = cov_scaled.view(sum_shape).sum(dim=sum_dims[0]).sum(dim=sum_dims[1])
 
-    new_mvn = MultivariateNormal(new_mean, new_cov)
+    new_mvn = MultivariateNormal(new_mean, new_cov.clamp_min(1e-8))
     return GPyTorchPosterior(new_mvn)
